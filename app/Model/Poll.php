@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Model\Poll
@@ -18,10 +19,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Poll whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Poll whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Poll whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Model\Question[] $questions
+ * @property-read int|null $questions_count
  */
 final class Poll extends Model
 {
     protected $table = 'polls';
 
     protected $fillable = ['name'];
+
+    public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class, 'pollID')->whereNull('parentID');
+    }
 }
