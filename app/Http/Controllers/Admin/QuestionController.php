@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateQuestionRequest;
 use App\Http\Resources\QuestionResource;
 use App\Service\QuestionService;
 use App\UseCase\CreateQuestionUseCase;
+use App\UseCase\DeleteQuestionUseCase;
 
 final class QuestionController extends Controller
 {
@@ -23,5 +24,18 @@ final class QuestionController extends Controller
         $question = $questionService->update($questionID, $updateQuestionRequest->getDTO());
 
         return response(new QuestionResource($question));
+    }
+
+    /**
+     * @param DeleteQuestionUseCase $deleteQuestionUseCase
+     * @param int $questionID
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Exception
+     */
+    public function deleteQuestion(DeleteQuestionUseCase $deleteQuestionUseCase, int $questionID)
+    {
+        $result = $deleteQuestionUseCase->execute($questionID);
+
+        return response(['success' => $result]);
     }
 }
