@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\DTO\CreateQuestionDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddQuestionRequest extends FormRequest
+class CreateQuestionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

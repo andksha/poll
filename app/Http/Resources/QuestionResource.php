@@ -18,8 +18,9 @@ class QuestionResource extends JsonResource
         /** @var Question $this */
 
         return [
-            'name'    => $this->name ?? '',
-            'answers' => AnswerResource::collection($this->answers ?? []),
+            'id'            => $this->id ?? 0,
+            'name'          => $this->name ?? '',
+            'answers'       => AnswerResource::collection($this->answers ?? []),
             'sub_questions' => QuestionResource::collection($this->subQuestions ?? [])
         ];
     }

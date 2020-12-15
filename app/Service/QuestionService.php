@@ -3,9 +3,11 @@
 namespace App\Service;
 
 use App\DTO\QuestionDTO;
+use App\Model\Answer;
 use App\Model\Poll;
 use App\Model\Question;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 final class QuestionService
@@ -22,6 +24,8 @@ final class QuestionService
         $questions = $questions->merge($this->insertSubQuestions($questions, $poll));
 
         $this->insertAnswers($questions);
+
+        return $questions;
     }
 
     private function insertQuestions(array $questions, Poll $poll): Collection
@@ -90,12 +94,43 @@ final class QuestionService
                 foreach ($answers as $answer) {
                     $answersToInsert[] = [
                         'questionID' => $question->id,
-                        'content' => $answer['content']
+                        'content'    => $answer['content']
                     ];
                 }
             }
         }
 
         return DB::table('answers')->insert($answersToInsert);
+    }
+
+    public function update(int $questionID, QuestionDTO $questionDTO): ?Question
+    {
+        $poll = Poll::query()->find($questionDTO->getPollID());
+        $question = Question::query()->find($questionID);
+
+        if (!$poll) {
+            throw new ModelNotFoundException('Poll was not found');
+        }
+
+        if (!$question) {
+            return $this->insert([$questionDTO], $poll)->sortByDesc('created_at')->last();
+        }
+
+        $question->update($questionDTO->toArray());
+        $answers = $questionDTO->getAnswers();
+
+        if ($answers) {
+            foreach ($answers as $answer) {
+                Answer::query()->updateOrCreate(
+                    [
+                        'id'         => $answer['id'] ?? 0,
+                        'questionID' => $question->id
+                    ],
+                    array_merge($answer, ['questionID' => $question->id])
+                );
+            }
+        }
+
+        return $question->load('answers');
     }
 }

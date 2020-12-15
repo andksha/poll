@@ -25,4 +25,6 @@ use Illuminate\Database\Eloquent\Model;
 final class Answer extends Model
 {
     protected $table = 'answers';
+
+    protected $fillable = ['questionID', 'content'];
 }

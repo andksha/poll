@@ -9,9 +9,11 @@ final class QuestionDTO implements Arrayable
     private string $name = '';
     private ?array $answers = [];
     private ?array $subQuestions = [];
+    private int $pollID;
 
     public function __construct(array $question)
     {
+        $this->pollID = $question['poll_id'] ?? 0;
         $this->name = $question['name'] ?? '';
         $this->answers = $question['answers'] ?? [];
 
@@ -29,6 +31,11 @@ final class QuestionDTO implements Arrayable
         return [
             'name' => $this->name
         ];
+    }
+
+    public function getPollID(): int
+    {
+        return $this->pollID;
     }
 
     public function getName(): string
