@@ -21,6 +21,8 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin', 'namespace' => 'Admin'
     Route::delete('/question/{id}', 'QuestionController@deleteQuestion')->where('id', '[0-9]+');
 });
 
+Route::post('/poll', 'PollController@fillPoll');
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
