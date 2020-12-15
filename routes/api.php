@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => 'api', 'prefix' => 'admin'], function () {
-    Route::post('/poll', 'Admin\PollController@createPoll');
-    Route::put('/poll/{id}', 'PollController@updatePoll');
+Route::group(['middleware' => 'api', 'prefix' => 'admin', 'namespace' => 'Admin'], function () {
+    Route::post('/poll', 'PollController@createPoll');
+    Route::post('/question', 'QuestionController@addQuestion');
     Route::delete('/poll/{id}', 'PollController@deletePoll');
 });
 

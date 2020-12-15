@@ -7,11 +7,11 @@ final class CreatePollDTO
     private string $pollName;
     private array $questions;
 
-    public function __construct(array $attributes)
+    public function __construct(array $data)
     {
-        $this->pollName = $attributes['poll_name'] ?? '';
+        $this->pollName = $data['poll_name'] ?? '';
 
-        $questions = $attributes['questions'] ?? [];
+        $questions = $data['questions'] ?? [];
 
         foreach ($questions as $question) {
             $this->questions[] = new QuestionDTO($question);

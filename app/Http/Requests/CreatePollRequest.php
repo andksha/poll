@@ -25,12 +25,15 @@ class CreatePollRequest extends FormRequest
     public function rules()
     {
         return [
-            'poll_name'                     => ['required'],
-            'questions'                     => ['required', 'array'],
-            'questions.*.name'              => ['required'],
-            'questions.*.answers'           => ['array'],
-            'questions.*.answers.*.content' => ['required', 'alpha_dash'],
-            'questions.*.sub_questions'     => ['array']
+            'poll_name'                                     => ['required'],
+            'questions'                                     => ['required', 'array'],
+            'questions.*.name'                              => ['required'],
+            'questions.*.answers'                           => ['array'],
+            'questions.*.answers.*.content'                 => ['required'],
+            'questions.*.sub_questions'                     => ['array'],
+            'questions.*.sub_questions.*.name'              => ['required'],
+            'questions.*.sub_questions.*.answers'           => ['array'],
+            'questions.*.sub_questions.*.answers.*.content' => ['required'],
         ];
     }
 

@@ -9,9 +9,9 @@ use App\UseCase\CreatePollUseCase;
 
 final class PollController extends Controller
 {
-    public function createPoll(CreatePollRequest $request, CreatePollUseCase $createPollUseCase)
+    public function createPoll(CreatePollRequest $createPollRequest, CreatePollUseCase $createPollUseCase)
     {
-        $poll = $createPollUseCase->execute($request->getDTO())
+        $poll = $createPollUseCase->execute($createPollRequest->getDTO())
             ->load(['questions', 'questions.answers', 'questions.subQuestions']);
 
         return response(new PollResource($poll));
